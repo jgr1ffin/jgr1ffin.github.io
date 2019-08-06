@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>ITSM ServiceNow Blog by Jon Griffin</title>
+		<title>ITSM ServiceNow Blog</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -25,48 +25,6 @@
 					</nav>
 				</header>
 
-				<!-- Menu -->
-					<section id="menu">
-
-						<!-- Links -->
-							<section>
-								<ul class="links">
-									<li>
-										<a href="#">
-											<h3>Lorem ipsum</h3>
-											<p>Feugiat tempus veroeros dolor</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Dolor sit amet</h3>
-											<p>Sed vitae justo condimentum</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Feugiat veroeros</h3>
-											<p>Phasellus sed ultricies mi congue</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Etiam sed consequat</h3>
-											<p>Porta lectus amet ultricies</p>
-										</a>
-									</li>
-								</ul>
-							</section>
-
-						<!-- Actions -->
-							<section>
-								<ul class="actions stacked">
-									<li><a href="#" class="button large fit">Log In</a></li>
-								</ul>
-							</section>
-
-					</section>
-
 				<!-- Main -->
 					<div id="main">
 
@@ -74,8 +32,8 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Inform the help desk when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident task form for Windows 7 & unmanaged Mac's.</p>
+										<h2><a href="#">Inform the Help Desk when computers are out of compliance</a></h2>
+										<p>Inform & style the Incident form when the associated computer is out of compliance (Windows 7 / unmanaged).</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 1, 2019</time>
@@ -83,43 +41,87 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>I created this UI action to automatically populate the computer associated with the task. This task is tedious to perform correctly
+								<p>This script was developed to help inform the Help Desk when a callers computer is out of configuration compliance, particulary to address
+									Windows 7 end of support in January and additinal unmanaged JAMF MDM computers (a recent inititive). This task is tedious to perform correctly 
 									and thus is often skipped or the wrong computer is selected. This script first checks the Hardware Asset table [alm_hardware] for
 									primary assigned assets, if none are found it checks the CMDB CI Computer table [cmdb_ci_computer] for a computer they last logged into.
 								</p>
 								<pre>
+									<h2>Client Script:</h2>
 									<code class="language-javascript">
-									var caller = current.caller_id;
-									var grAsset = new GlideRecord('alm_hardware');
-									grAsset.addQuery('state', 'In use');
-									grAsset.addQuery('assigned_to', caller);
-									grAsset.addQuery('purpose', 'primary');
-									grAsset.orderByDesc('retirement_date');
-									grAsset.setLimit(1);
-									grAsset.query();
-										
-									//Update associated computer with primary assigned asset
-									if (grAsset.next()) {
-										current.setValue('u_assoc_comp_ci', grAsset.ci);
-										current.update();
-										gs.addInfoMessage('Populated associated computer, please verify asset details.');
-									} else {
-										//Else update associated computer with assigned computer CI
-										var grCompCI = new GlideRecord('cmdb_ci_computer');
-										grCompCI.addQuery('assigned_to', caller);
-										grCompCI.setLimit(1);
-										grCompCI.query();
-											
-										if (grCompCI.next()) {
-											current.setValue('u_assoc_comp_ci', grCompCI);
-											current.update();
-											gs.addInfoMessage('Populated associated computer, please verify asset details.');
-										} else {
-											gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
+										function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	
+											if (isLoading || newValue === '') {
+												var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
+												g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+												g_form.hideFieldMsg('u_assoc_comp_ci');
+												assocCompField.style.fontWeight = 'normal';
+												assocCompField.style.backgroundColor = 'white';
+												return;
+											}
+												
+											// creates an instance of the GlideAjax object AssociatedCompUtils
+											// calls the assocCompObj method and passes the assoc comp sys_id
+											var assocCompID = g_form.getValue('u_assoc_comp_ci');
+											var assocCompGA = new GlideAjax('AssociatedCompUtils');
+											assocCompGA.addParam('sysparm_name', 'assocCompObj');
+											assocCompGA.addParam('sysparm_assoc_comp_id', assocCompID);
+											assocCompGA.getXML(assocCompAlert);
+												
+											function assocCompAlert(response) {
+												// extracts the answer and creates an object from the JSON formatted string
+												var answer = response.responseXML.documentElement.getAttribute('answer');
+												var compDetailsObj = JSON.parse(answer);
+													
+												// selects the assoc comp field
+												var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
+												
+												// inform and style the assoc comp field for win7 or unmanaged computers
+												if (compDetailsObj[0].os && compDetailsObj[0].os.indexOf("Windows 7") > -1) {
+													g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+													g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Windows 7 computer (requires remediation)");
+													assocCompField.style.fontWeight = 'bold';
+													assocCompField.style.backgroundColor = 'orange';
+												}
+												else if (compDetailsObj[0].manufacturer.indexOf("Apple") > -1 && compDetailsObj[0].discoverySrc.indexOf("SCCM") == -1) {
+													g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+													g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Unmanaged Mac (requires JAMF)");
+													assocCompField.style.fontWeight = 'bold';
+													assocCompField.style.backgroundColor = 'orange';
+												} else {
+													// reset if neither
+													g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+													g_form.hideFieldMsg('u_assoc_comp_ci');
+													assocCompField.style.fontWeight = 'normal';
+													assocCompField.style.backgroundColor = 'white';
+												}
+											}
 										}
-									}
-									action.setRedirectURL(current);
 									</code>
+									<code class="language-javascript">
+
+									</code>
+								<h2>Script Include:</h2>
+									var AssociatedCompUtils = Class.create();
+									AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+										
+										assocCompObj: function() {
+											var compArray = [];
+											var assocCompID = this.getParameter('sysparm_assoc_comp_id');
+											var grAssocCompCI = new GlideRecord('cmdb_ci_computer');
+											grAssocCompCI.get(assocCompID);
+											
+											var compDetailsObj = {};
+											compDetailsObj.os = grAssocCompCI.getDisplayValue('os');
+											compDetailsObj.discoverySrc = grAssocCompCI.getDisplayValue('discovery_source');
+											compDetailsObj.manufacturer = grAssocCompCI.getDisplayValue('manufacturer');
+											
+											compArray.push(compDetailsObj);
+											return JSON.stringify(compArray);
+										},
+											
+										type: 'AssociatedCompUtils'
+									});
 								</pre>
 							</article>
 
@@ -128,13 +130,10 @@
 				<!-- Footer -->
 					<section id="footer">
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
-							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://www.linkedin.com/in/jon-griffin-71124814" class="fab fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="mailto: jgriff@gmail.com?subject = ServiceNow Blog" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 						</ul>
-						<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+						<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 					</section>
 
 			</div>

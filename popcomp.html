@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>ITSM ServiceNow Blog by Jon Griffin</title>
+		<title>ITSM ServiceNow Blog</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -25,48 +25,6 @@
 					</nav>
 				</header>
 
-				<!-- Menu -->
-					<section id="menu">
-
-						<!-- Links -->
-							<section>
-								<ul class="links">
-									<li>
-										<a href="#">
-											<h3>Lorem ipsum</h3>
-											<p>Feugiat tempus veroeros dolor</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Dolor sit amet</h3>
-											<p>Sed vitae justo condimentum</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Feugiat veroeros</h3>
-											<p>Phasellus sed ultricies mi congue</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Etiam sed consequat</h3>
-											<p>Porta lectus amet ultricies</p>
-										</a>
-									</li>
-								</ul>
-							</section>
-
-						<!-- Actions -->
-							<section>
-								<ul class="actions stacked">
-									<li><a href="#" class="button large fit">Log In</a></li>
-								</ul>
-							</section>
-
-					</section>
-
 				<!-- Main -->
 					<div id="main">
 
@@ -74,8 +32,8 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Inform the help desk when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident task form for Windows 7 & unmanaged Mac's.</p>
+										<h2><a href="#">Quickly populate the associated Task computer</a></h2>
+										<p>Automatically populate the callers primary assigned computer.</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 1, 2019</time>
@@ -83,9 +41,8 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>I created this UI action to automatically populate the computer associated with the task. This task is tedious to perform correctly
-									and thus is often skipped or the wrong computer is selected. This script first checks the Hardware Asset table [alm_hardware] for
-									primary assigned assets, if none are found it checks the CMDB CI Computer table [cmdb_ci_computer] for a computer they last logged into.
+								<p>This script was devloped to help IT staff quickly populate the callers assigned computer asset, which is most likely the computer associated with
+								 the Incident/Task.
 								</p>
 								<pre>
 									<code class="language-javascript">
@@ -128,13 +85,10 @@
 				<!-- Footer -->
 					<section id="footer">
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
-							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://www.linkedin.com/in/jon-griffin-71124814" class="fab fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							<li><a href="mailto: jgriff@gmail.com?subject = ServiceNow Blog" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 						</ul>
-						<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+						<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 					</section>
 
 			</div>
