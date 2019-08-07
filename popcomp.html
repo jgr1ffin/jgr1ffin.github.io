@@ -37,7 +37,7 @@
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 1, 2019</time>
-										<a href="#" class="author"><span class="name">JGr1ffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
@@ -46,36 +46,36 @@
 								</p>
 								<pre>
 									<code class="language-javascript">
-									var caller = current.caller_id;
-									var grAsset = new GlideRecord('alm_hardware');
-									grAsset.addQuery('state', 'In use');
-									grAsset.addQuery('assigned_to', caller);
-									grAsset.addQuery('purpose', 'primary');
-									grAsset.orderByDesc('retirement_date');
-									grAsset.setLimit(1);
-									grAsset.query();
-										
-									//Update associated computer with primary assigned asset
-									if (grAsset.next()) {
-										current.setValue('u_assoc_comp_ci', grAsset.ci);
-										current.update();
-										gs.addInfoMessage('Populated associated computer, please verify asset details.');
-									} else {
-										//Else update associated computer with assigned computer CI
-										var grCompCI = new GlideRecord('cmdb_ci_computer');
-										grCompCI.addQuery('assigned_to', caller);
-										grCompCI.setLimit(1);
-										grCompCI.query();
-											
-										if (grCompCI.next()) {
-											current.setValue('u_assoc_comp_ci', grCompCI);
-											current.update();
-											gs.addInfoMessage('Populated associated computer, please verify asset details.');
-										} else {
-											gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
-										}
-									}
-									action.setRedirectURL(current);
+var caller = current.caller_id;
+var grAsset = new GlideRecord('alm_hardware');
+grAsset.addQuery('state', 'In use');
+grAsset.addQuery('assigned_to', caller);
+grAsset.addQuery('purpose', 'primary');
+grAsset.orderByDesc('retirement_date');
+grAsset.setLimit(1);
+grAsset.query();
+		
+//Update associated computer with primary assigned asset
+if (grAsset.next()) {
+	current.setValue('u_assoc_comp_ci', grAsset.ci);
+	current.update();
+	gs.addInfoMessage('Populated associated computer, please verify asset details.');
+} else {
+	//Else update associated computer with assigned computer CI
+	var grCompCI = new GlideRecord('cmdb_ci_computer');
+	grCompCI.addQuery('assigned_to', caller);
+	grCompCI.setLimit(1);
+	grCompCI.query();
+		
+	if (grCompCI.next()) {
+		current.setValue('u_assoc_comp_ci', grCompCI);
+		current.update();
+		gs.addInfoMessage('Populated associated computer, please verify asset details.');
+	} else {
+		gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
+	}
+}
+action.setRedirectURL(current);
 									</code>
 								</pre>
 							</article>
