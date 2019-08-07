@@ -1,7 +1,5 @@
 /*
-	Future Imperfect by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
 (function($) {
@@ -28,7 +26,7 @@
 			}, 100);
 		});
 
-	// Menu.
+	/* Menu.
 		$menu
 			.appendTo($body)
 			.panel({
@@ -40,7 +38,8 @@
 				side: 'right',
 				target: $body,
 				visibleClass: 'is-menu-visible'
-			});
+			});*/
+	
 
 	// Search (header).
 		var $search = $('#search'),
