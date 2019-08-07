@@ -49,110 +49,110 @@
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
 									<code class="language-javascript">
-											function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+
+// agent workspace check - agentworkspace (mobile) or old ui (desktop)
+	var env = typeof g_form.initialize === 'undefined' ? 'mobile' : 'desktop';
+	if (env == 'mobile') {
+		if (isLoading || newValue === '') {
+			return;
+		} else {
+			assocCompDetails();
+		}
+	} else {
+		if (env == 'desktop') {
+			if (isLoading || newValue === '') {
+				var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
+				g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+				g_form.hideFieldMsg('u_assoc_comp_ci');
+				assocCompField.style.fontWeight = 'normal';
+				assocCompField.style.backgroundColor = 'white';
+				return;
+			} else {
+				assocCompDetails();
+			}
+		}
+	}
 	
-												// agent workspace check - agentworkspace (mobile) or old ui (desktop)
-												var env = typeof g_form.initialize === 'undefined' ? 'mobile' : 'desktop';
-												if (env == 'mobile') {
-													if (isLoading || newValue === '') {
-														return;
-													} else {
-														assocCompDetails();
-													}
-												} else {
-													if (env == 'desktop') {
-														if (isLoading || newValue === '') {
-															var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
-															g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
-															g_form.hideFieldMsg('u_assoc_comp_ci');
-															assocCompField.style.fontWeight = 'normal';
-															assocCompField.style.backgroundColor = 'white';
-															return;
-														} else {
-															assocCompDetails();
-														}
-													}
-												}
-												
-												function assocCompDetails(env) {
-													// creates an instance of the GlideAjax object AssociatedCompUtils
-													// calls the assocCompObj method and passes the assoc comp sys_id
-													var assocCompID = g_form.getValue('u_assoc_comp_ci');
-													var assocCompGA = new GlideAjax('AssociatedCompUtils');
-													assocCompGA.addParam('sysparm_name', 'assocCompObj');
-													assocCompGA.addParam('sysparm_assoc_comp_id', assocCompID);
-													assocCompGA.getXML(assocCompAlert);
-												}
-												
-												function assocCompAlert(response) {
-													// extracts the answer and creates an object from the JSON formatted string
-													var answer = response.responseXML.documentElement.getAttribute('answer');
-													var compDetailsObj = JSON.parse(answer);
-													
-													// agent workspace check - agentworkspace (mobile) or old ui (desktop)
-													var env = typeof g_form.initialize === 'undefined' ? 'mobile' : 'desktop';
-													
-													// selects the assoc comp field
-													var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
-													
-													// inform and style the assoc comp field for win7 or unmanaged computers
-													if (compDetailsObj[0].os && compDetailsObj[0].os.indexOf("Windows 7") > -1) {
-														if (env == 'mobile') {
-															g_form.addInfoMessage("Alert: Windows 7 computer (requires remediation)");
-														} else {
-															g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
-															g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Windows 7 computer (requires remediation)");
-															assocCompField.style.fontWeight = 'bold';
-															assocCompField.style.backgroundColor = 'orange';
-														}
-													}
-													else if (compDetailsObj[0].manufacturer.indexOf("Apple") > -1 && compDetailsObj[0].discoverySrc.indexOf("SCCM") == -1) {
-														if (env == 'mobile') {
-															g_form.addInfoMessage("Alert: Unmanaged Mac (requires JAMF)");
-														} else {
-															g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
-															g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Unmanaged Mac (requires JAMF)");
-															assocCompField.style.fontWeight = 'bold';
-															assocCompField.style.backgroundColor = 'orange';
-														}
-													} else {
-														// reset if neither
-														if (env == 'mobile') {
-															g_form.clearMessages();
-														} else {
-															g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
-															g_form.hideFieldMsg('u_assoc_comp_ci');
-															assocCompField.style.fontWeight = 'normal';
-															assocCompField.style.backgroundColor = 'white';
-														}
-													}
-												}
-											}											
+	function assocCompDetails(env) {
+		// creates an instance of the GlideAjax object AssociatedCompUtils
+		// calls the assocCompObj method and passes the assoc comp sys_id
+		var assocCompID = g_form.getValue('u_assoc_comp_ci');
+		var assocCompGA = new GlideAjax('AssociatedCompUtils');
+		assocCompGA.addParam('sysparm_name', 'assocCompObj');
+		assocCompGA.addParam('sysparm_assoc_comp_id', assocCompID);
+		assocCompGA.getXML(assocCompAlert);
+	}
+	
+	function assocCompAlert(response) {
+		// extracts the answer and creates an object from the JSON formatted string
+		var answer = response.responseXML.documentElement.getAttribute('answer');
+		var compDetailsObj = JSON.parse(answer);
+		
+		// agent workspace check - agentworkspace (mobile) or old ui (desktop)
+		var env = typeof g_form.initialize === 'undefined' ? 'mobile' : 'desktop';
+		
+		// selects the assoc comp field
+		var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
+		
+		// inform and style the assoc comp field for win7 or unmanaged computers
+		if (compDetailsObj[0].os && compDetailsObj[0].os.indexOf("Windows 7") > -1) {
+			if (env == 'mobile') {
+				g_form.addInfoMessage("Alert: Windows 7 computer (requires remediation)");
+			} else {
+				g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+				g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Windows 7 computer (requires remediation)");
+				assocCompField.style.fontWeight = 'bold';
+				assocCompField.style.backgroundColor = 'orange';
+			}
+		}
+		else if (compDetailsObj[0].manufacturer.indexOf("Apple") > -1 && compDetailsObj[0].discoverySrc.indexOf("SCCM") == -1) {
+			if (env == 'mobile') {
+				g_form.addInfoMessage("Alert: Unmanaged Mac (requires JAMF)");
+			} else {
+				g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+				g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Unmanaged Mac (requires JAMF)");
+				assocCompField.style.fontWeight = 'bold';
+				assocCompField.style.backgroundColor = 'orange';
+			}
+		} else {
+			// reset if neither
+			if (env == 'mobile') {
+				g_form.clearMessages();
+			} else {
+				g_form.removeDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
+				g_form.hideFieldMsg('u_assoc_comp_ci');
+				assocCompField.style.fontWeight = 'normal';
+				assocCompField.style.backgroundColor = 'white';
+			}
+		}
+	}
+}	
 									</code>
 								</pre>
 								<h4 id="code-block-with-backticks">Script Include:</h4>
 								<pre>
 									<code class="language-javascript">
-									var AssociatedCompUtils = Class.create();
-									AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
-										
-										assocCompObj: function() {
-											var compArray = [];
-											var assocCompID = this.getParameter('sysparm_assoc_comp_id');
-											var grAssocCompCI = new GlideRecord('cmdb_ci_computer');
-											grAssocCompCI.get(assocCompID);
-											
-											var compDetailsObj = {};
-											compDetailsObj.os = grAssocCompCI.getDisplayValue('os');
-											compDetailsObj.discoverySrc = grAssocCompCI.getDisplayValue('discovery_source');
-											compDetailsObj.manufacturer = grAssocCompCI.getDisplayValue('manufacturer');
-											
-											compArray.push(compDetailsObj);
-											return JSON.stringify(compArray);
-										},
-											
-										type: 'AssociatedCompUtils'
-									});
+	var AssociatedCompUtils = Class.create();
+	AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+		
+		assocCompObj: function() {
+			var compArray = [];
+			var assocCompID = this.getParameter('sysparm_assoc_comp_id');
+			var grAssocCompCI = new GlideRecord('cmdb_ci_computer');
+			grAssocCompCI.get(assocCompID);
+			
+			var compDetailsObj = {};
+			compDetailsObj.os = grAssocCompCI.getDisplayValue('os');
+			compDetailsObj.discoverySrc = grAssocCompCI.getDisplayValue('discovery_source');
+			compDetailsObj.manufacturer = grAssocCompCI.getDisplayValue('manufacturer');
+			
+			compArray.push(compDetailsObj);
+			return JSON.stringify(compArray);
+		},
+			
+		type: 'AssociatedCompUtils'
+	});
 									</code>
 								</pre>
 							</article>
