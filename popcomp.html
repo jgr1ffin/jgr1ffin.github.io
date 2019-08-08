@@ -41,8 +41,9 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This script was devloped to help IT staff quickly populate the callers assigned computer asset, which is most likely the computer associated with
-								 the Incident/Task.
+								<p>This UI Action was created to help IT staff quickly populate the computer most likely associated with the IT incident being reported on the incident task form. The script 
+									attempts to assign the primary hardware asset <code>[ALM_HARDWARE]</code>, sorted by the retirement date. If no primary assets are assigned, it will fall back on the 
+									CMDB Computer <code>[CMDB_CI_Computer]</code> that they last logged into. Performing this task manually is tedious and thus is often forgotten or the wrong computer is selected.
 								</p>
 								<pre>
 									<code class="language-javascript">
