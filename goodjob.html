@@ -32,50 +32,41 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Quickly populate the Tasks associated computer</a></h2>
-										<p>Automatically populate the callers primary assigned computer.</p>
+										<h2><a href="#">Promote efficiency by giving praise</a></h2>
+										<p>Say "good job!" when IT staff complete tasks faster than average.</p>
 									</div>
 									<div class="meta">
-										<time class="published" datetime="2019-08-01">August 1, 2019</time>
+										<time class="published" datetime="2019-05-13">May 13, 2019</time>
 										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This script was devloped to help IT staff quickly populate the callers assigned computer asset, which is most likely the computer associated with
-								 the Incident/Task.
+								<p>Developed to immediately praise staff for doing a good job while promoting efficiency. This Incident Business Rule filter condition 
+								is <code>business_durationISNOTEMPTY^incident_state=6^close_code=Solved (Permanently)^EQ</code> with a scripted condition of 
+								<code>gs.getSession().isInteractive()</code>.
 								</p>
 								<pre>
 									<code class="language-javascript">
-var caller = current.caller_id;
-var grAsset = new GlideRecord('alm_hardware');
-grAsset.addQuery('state', 'In use');
-grAsset.addQuery('assigned_to', caller);
-grAsset.addQuery('purpose', 'primary');
-grAsset.orderByDesc('retirement_date');
-grAsset.setLimit(1);
-grAsset.query();
-		
-//Update associated computer with primary assigned asset
-if (grAsset.next()) {
-	current.setValue('u_assoc_comp_ci', grAsset.ci);
-	current.update();
-	gs.addInfoMessage('Populated associated computer, please verify asset details.');
-} else {
-	//Else update associated computer with assigned computer CI
-	var grCompCI = new GlideRecord('cmdb_ci_computer');
-	grCompCI.addQuery('assigned_to', caller);
-	grCompCI.setLimit(1);
-	grCompCI.query();
-		
-	if (grCompCI.next()) {
-		current.setValue('u_assoc_comp_ci', grCompCI);
-		current.update();
-		gs.addInfoMessage('Populated associated computer, please verify asset details.');
-	} else {
-		gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
+(function executeRule(current, previous /*null when async*/) {
+
+	var grTask = new GlideAggregate('incident');
+	grTask.addQuery('cmdb_ci', current.cmdb_ci);
+	grTask.addQuery('assignment_group', current.assignment_group);
+	grTask.addQuery('sys_class_name', current.sys_class_name);
+	grTask.addQuery('category', current.category);
+	grTask.addEncodedQuery('business_durationISNOTEMPTY');
+	grTask.addAggregate('AVG', 'business_duration');
+	grTask.query();
+	
+	while(grTask.next()) {
+		var avgBusDur = grTask.getAggregate('AVG', 'business_duration');
+		if (current.business_duration.split(' ')[1] &lt; avgBusDur) {
+			gs.addInfoMessage('Good job! You resolved this task quicker than average!!');
+			return;
+		}
 	}
-}
-action.setRedirectURL(current);
+	
+})(current, previous);
 									</code>
 								</pre>
 							</article>

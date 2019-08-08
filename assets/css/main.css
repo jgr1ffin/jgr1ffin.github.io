@@ -7,8 +7,8 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
-a, abbr, acronym, address, big, cite,
-del, dfn, em, img, ins, kbd, q, s, samp,
+pre, a, abbr, acronym, address, big, cite,
+code, del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var, b,
 u, i, center, dl, dt, dd, ol, ul, li, fieldset,
 form, label, legend, table, caption, tbody,
@@ -3543,6 +3543,13 @@ input, select, textarea {
 	}
 	
 	/* Inline code */
+	code {
+		background-color: #eee;
+		border-radius: 3px;
+		font-family: courier, monospace;
+		padding: 0 3px;
+	}
+	
 	:not(pre) > code[class*="language-"] {
 		padding: .1em;
 		border-radius: .3em;
