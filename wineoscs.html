@@ -32,17 +32,22 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Inform the Help Desk when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident form when the associated computer is out of compliance (e.g., Windows 7).</p>
+										<h2><a href="#">Alert when computers are out of compliance</a></h2>
+										<p>Inform & style the Incident form when the associated computer is out of compliance (e.g., Windows 7 end of support).</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 1, 2019</time>
-										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+										<a href="#" class="author"><span class="name">Jon Griffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This script was created to help with the remediation of Windows 7 end of support. The script is designed to inform the Help Desk when a 
-									customers computer is out of configuration compliance.
+								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform the Help Desk when a 
+									callers assigned computer is out of configuration compliance with a field message and styling. The script is implemented as both a onChange and onLoad Client Script on the 
+									<strong>incident</strong> table. The script taylors the alert based on the UI environment, classic desktop or Agent Workspace. The script starts off by creating an instance 
+									of the GlideAjax object AssociatedCompUtils and passes in the associated computer sys_id while calling the assocCompObj method (shown below the Client Script). The script 
+									include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object containing the operating system, discovery source, and 
+									manufacturer. The objects key value pairs are pushed into an array which is returned as a JSON formatted string. The JSON XML answer string is then parsed into an object and checked for 
+									matching compliance arguments (Windows 7 and unmanaged Mac).
 								</p>
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
@@ -68,8 +73,8 @@ function onChange(control, oldValue, newValue, isLoading, isTemplate) {
 		assocCompDetails();
 	}
 }
-	
-function assocCompDetails(env) {
+
+function assocCompDetails() {
 	// creates an instance of the GlideAjax object AssociatedCompUtils
 	// calls the assocCompObj method and passes the assoc comp sys_id
 	var assocCompID = g_form.getValue('u_assoc_comp_ci');
@@ -91,16 +96,18 @@ function assocCompAlert(response) {
 	var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
 	
 	// inform and style the assoc comp field for win7 or unmanaged computers
+	var msg = "Alert: " + compDetailsObj[0].os + " computer (requires remediation)";
 	if (compDetailsObj[0].os && compDetailsObj[0].os.indexOf("Windows 7") > -1) {
 		if (env == 'mobile') {
-			g_form.addInfoMessage("Alert: Windows 7 computer (requires remediation)");
+			g_form.addInfoMessage(msg);
 		} else {
 			g_form.addDecoration('u_assoc_comp_ci', 'icon-alert', 'Alert');
-			g_form.showFieldMsg('u_assoc_comp_ci', "Alert: Windows 7 computer (requires remediation)");
+			g_form.showFieldMsg('u_assoc_comp_ci', msg);
 			assocCompField.style.fontWeight = 'bold';
 			assocCompField.style.backgroundColor = 'orange';
 		}
-	} else if (compDetailsObj[0].manufacturer.indexOf("Apple") > -1 && (compDetailsObj[0].os == null || compDetailsObj[0].discoverySrc.indexOf("SCCM") == -1)) {
+	} else if (compDetailsObj[0].manufacturer.indexOf("Apple") > -1 && 
+	(compDetailsObj[0].os == null || compDetailsObj[0].discoverySrc.indexOf("SCCM") == -1)) {
 		if (env == 'mobile') {
 			g_form.addInfoMessage("Alert: Unmanaged Mac (requires JAMF)");
 		} else {
@@ -121,6 +128,31 @@ function assocCompAlert(response) {
 		}
 	}
 }
+									</code>
+								</pre>
+								<h4 id="code-block-with-backticks">Script Include:</h4>
+								<pre>
+									<code class="language-javascript">
+var AssociatedCompUtils = Class.create();
+AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+	
+	assocCompObj: function() {
+		var compArray = [];
+		var assocCompID = this.getParameter('sysparm_assoc_comp_id');
+		var grAssocCompCI = new GlideRecord('cmdb_ci_computer');
+		grAssocCompCI.get(assocCompID);
+		
+		var compDetailsObj = {};
+		compDetailsObj.os = grAssocCompCI.getDisplayValue('os');
+		compDetailsObj.discoverySrc = grAssocCompCI.getDisplayValue('discovery_source');
+		compDetailsObj.manufacturer = grAssocCompCI.getDisplayValue('manufacturer');
+		
+		compArray.push(compDetailsObj);
+		return JSON.stringify(compArray);
+	},
+		
+	type: 'AssociatedCompUtils'
+});
 									</code>
 								</pre>
 							</article>
