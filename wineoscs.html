@@ -42,12 +42,15 @@
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform the Help Desk when a 
-									callers assigned computer is out of configuration compliance with a field message and styling. The script is implemented as both a onChange and onLoad Client Script on the 
-									<strong>incident</strong> table. The script taylors the alert based on the UI environment, classic desktop or Agent Workspace. The script starts off by creating an instance 
-									of the GlideAjax object AssociatedCompUtils and passes in the associated computer sys_id while calling the assocCompObj method (shown below the Client Script). The script 
-									include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object containing the operating system, discovery source, and 
-									manufacturer. The objects key value pairs are pushed into an array which is returned as a JSON formatted string. The JSON XML answer string is then parsed into an object and checked for 
-									matching compliance arguments (Windows 7 and unmanaged Mac).
+									callers assigned computer is out of configuration compliance with a field message and styling. The script is implemented as both a <em>onChange</em> and 
+									<em>onLoad</em> Client Script on the <strong>Incident</strong> table.
+								</p>
+								<p>The script tailors the alert based to the UI environment, classic or Agent Workspace. The script creates an instance of the GlideAjax object 
+									<code>AssociatedCompUtils</code> and passes in the associated computer <code>sys_id</code> while calling the <code>assocCompObj</code> method 
+									(in the Script Include code block). The <em>Script Include</em> creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates 
+									an object containing the <strong>operating system</strong>, <strong>discovery source</strong>, and <strong>manufacturer</strong>. The objects key value pairs 
+									are pushed into an array which is returned as a JSON formatted string. The JSON XML answer string is then parsed into an object and checked for matching 
+									compliance arguments (Windows 7 and unmanaged Mac).
 								</p>
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
