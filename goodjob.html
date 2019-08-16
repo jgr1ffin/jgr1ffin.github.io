@@ -42,7 +42,7 @@
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident ticket faster than average. 
-									Although it's currently only targeting Incidents, it could be adapted for use on the base Task table instead. The script creates 
+									Although it's currently only targeting Incidents, it could be adapted for use on the base <strong>Task</strong> table instead. The script creates 
 									a GlideAggregate Incident object assigned to <code>grTask</code> and adds query conditions against the current Incident ticket details 
 									(category/sub). The GlideAggregate then calculates the average <code>business_duration</code> of the matching records and compares it 
 									against the current Incident ticket. If the current <code>business_druation</code> is less than average the user is presented with an 

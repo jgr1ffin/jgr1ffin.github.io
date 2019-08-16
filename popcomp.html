@@ -46,7 +46,9 @@
 									computer <strong>cmdb_ci_computer</strong> that they last logged into. Performing this task manually is tedious and is often forgotten or the wrong computer is selected. The UI 
 									Action script first does client side form validation then calls the server side script to perform the GlideRecord lookup and record update. This script can be implemented as both 
 									a UI Action and onChange Client Script. To implement as a Client Script you can simply call the UI action with the following code: <code>gsftSubmit(null, g_form.getFormElement(), 'popAssocComp');</code> 
-									The <code>gsftSubmit()</code> method argument paramters calls the UI Action by the "Action Name" field value, in our case 'popAssocComp'.
+									The <code>gsftSubmit()</code> method argument paramters calls the UI Action by the "Action Name" field value, in our case <code>'popAssocComp'</code>.
+								</p>
+								<h4 id="code-block-with-backticks">UI Action:</h4>
 								<pre>
 									<code class="language-javascript">
 // client-side 'onclick' function
