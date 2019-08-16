@@ -41,65 +41,93 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This UI Action script was created to help IT staff quickly populate the computer most likely associated with the IT incident being reported on the incident task form. The script 
-									attempts to assign the primary hardware asset <strong>alm_hardware</strong>, sorted by the retirement date. If no primary assets are assigned, the script fall back on the 
-									computer <strong>cmdb_ci_computer</strong> that they last logged into. Performing this task manually is tedious and is often forgotten or the wrong computer is selected. The UI 
-									Action script first does client side form validation then calls the server side script to perform the GlideRecord lookup and record update. This script can be implemented as both 
-									a UI Action and onChange Client Script. To implement as a Client Script you can simply call the UI action with the following code: <code>gsftSubmit(null, g_form.getFormElement(), 'popAssocComp');</code> 
-									The <code>gsftSubmit()</code> method argument paramters calls the UI Action by the "Action Name" field value, in our case <code>'popAssocComp'</code>.
+								<p>This Client Script was created to help IT staff quickly populate the callers assigned computer on the <strong>Incident</strong> form, which is most likely the computer 
+									associated with the IT incident being reported. The script attempts to assign the primary hardware asset <strong>[alm_hardware]</strong>, sorted by the retirement date. 
+									If no primary assets are assigned, the script fall back on the CMDB computer CI <strong>[cmdb_ci_computer]</strong> that they last logged into. Performing this task manually 
+									is tedious and often forgotten. The script creates an instance of the GlideAjax object <code>AssociatedCompUtils</code>, then calls the <code>assignedAsset</code> method to 
+									perform the GlideRecord lookup. This script is currently implemented as a onChange [caller] and onLoad Client Script, but it could also be implemented as a UI Action.
 								</p>
-								<h4 id="code-block-with-backticks">UI Action:</h4>
+								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
 									<code class="language-javascript">
-// client-side 'onclick' function
-function callerCheck() {
-	if (g_form.getValue('caller_id') == '') {
-		g_form.addInfoMessage('You must first populate a caller to automatically associate a computer!');
-		return false;
+function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	if (isLoading) {
+		return;
+	} else if (newValue == '') {
+		g_form.setValue('u_assoc_comp_ci', null);
+		return;
 	}
-	//Call the UI Action and skip the 'onclick' function
-	gsftSubmit(null, g_form.getFormElement(), 'popAssocComp');
+	
+	// creates an instance of the GlideAjax object AssociatedCompUtils
+	// calls the assignedAsset method and passes the caller_id
+	var caller = g_form.getValue('caller_id');
+	var assocCompGA = new GlideAjax('AssociatedCompUtils');
+	assocCompGA.addParam('sysparm_name', 'assignedAsset');
+	assocCompGA.addParam('sysparm_caller', caller);
+	assocCompGA.getXML(populateComputer);
 }
 
-// code that runs without 'onclick'
-if(typeof window == 'undefined') {
-	compCheck();
-}
-
-// server-side function
-function compCheck() {
-	var caller = current.caller_id;
-	var grAsset = new GlideRecord('alm_hardware');
-	grAsset.addQuery('state', 'In use');
-	grAsset.addQuery('assigned_to', caller);
-	grAsset.addQuery('purpose', 'primary');
-	grAsset.orderByDesc('retirement_date');
-	grAsset.setLimit(1);
-	grAsset.query();
-
-	// update associated computer with primary assigned asset
-	if (grAsset.next()) {
-		current.setValue('u_assoc_comp_ci', grAsset.ci);
-		current.update();
-		gs.addInfoMessage('Populated the associated computer, please verify asset details match the incident.');
+function populateComputer(response) {
+	// extracts the answer and creates an object from the JSON formatted string
+	var answer = response.responseXML.documentElement.getAttribute('answer');
+	var assetObj = JSON.parse(answer);
+	
+	// update associated computer
+	if (assetObj) {
+		g_form.setValue('u_assoc_comp_ci', assetObj[0].asset);
+		g_form.addInfoMessage(assetObj[0].message);
 	} else {
-		// else update associated computer with assigned computer ci
-		var grCompCI = new GlideRecord('cmdb_ci_computer');
-		grCompCI.addQuery('assigned_to', caller);
-		grCompCI.orderByDesc('last_discovered');
-		grCompCI.setLimit(1);
-		grCompCI.query();
-
-		if (grCompCI.next()) {
-			current.setValue('u_assoc_comp_ci', grCompCI);
-			current.update();
-			gs.addInfoMessage('Populated the associated computer, please verify asset details match the incident.');
-		} else {
-			gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
-		}
+		g_form.setValue('u_assoc_comp_ci', null);
+		g_form.addInfoMessage("Unable to locate callers computer, please assign manaully.");
 	}
-	action.setRedirectURL(current);
 }
+									</code>
+								</pre><br>
+								<h4 id="code-block-with-backticks">Script Include:</h4>
+								<pre>
+									<code class="language-javascript">
+var AssociatedCompUtils = Class.create();
+AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+												
+	assignedAsset: function() {
+		var compArray = [];
+		var caller = this.getParameter('sysparm_caller');
+		var grAsset = new GlideRecord('alm_hardware'); // check for assigned asset
+		grAsset.addQuery('state', 'In use');
+		grAsset.addQuery('assigned_to', caller);
+		grAsset.addQuery('purpose', 'primary');
+		grAsset.orderByDesc('retirement_date');
+		grAsset.setLimit(1);
+		grAsset.query();
+		
+		// pass back primary assigned asset
+		if (grAsset.next()) {
+			var assetDetailsObj = {};
+			assetDetailsObj.asset = grAsset.ci.getValue('sys_id');
+			assetDetailsObj.message = "Populated the associated computer, please verify the asset details match the incident.";
+			compArray.push(assetDetailsObj);
+			return JSON.stringify(compArray);
+		} else {
+			var compDetailsObj = {};
+			var grCompCI = new GlideRecord('cmdb_ci_computer'); // if not assigned asset, check for computer ci
+			grCompCI.addQuery('assigned_to', caller);
+			grCompCI.orderByDesc('last_discovered');
+			grCompCI.setLimit(1);
+			grCompCI.query();
+
+			if (grCompCI.next()) {
+				compDetailsObj.asset = grAsset.getValue('sys_id');
+				compDetailsObj.message = "Populated the associated computer, please verify the computer details match the incident.";
+				compArray.push(compDetailsObj);
+				return JSON.stringify(compArray);
+			} else {
+				return;
+			}
+		}
+	},
+		
+	type: 'AssociatedCompUtils'
+});
 									</code>
 								</pre>
 							</article>
