@@ -41,30 +41,37 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>Developed to immediately praise staff for doing a good job while promoting efficiency. This Incident Business Rule filter condition 
-								is <code>business_durationISNOTEMPTY^incident_state=6^close_code=Solved (Permanently)^EQ</code> with a scripted condition of 
-								<code>gs.getSession().isInteractive()</code>.
+								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident ticket faster than average. 
+									Although it's currently only targeting Incidents, it could be adapted for use on the base <strong>Task</strong> table instead. The script creates 
+									a GlideAggregate Incident object assigned to <code>grTask</code> and adds query conditions against the current Incident ticket details 
+									(category/sub). The GlideAggregate then calculates the average <code>business_duration</code> of the matching records and compares it 
+									against the current Incident ticket. If the current <code>business_druation</code> is less than average the user is presented with an 
+									information message stating, "Good job! You resolved this task quicker than average!!". The condition script below also confirms the session 
+									is interactive and the Incident state is 'Resolved', with a close code of "Solved (Permanently)".<br><br>
+									<strong>Script Condition: </strong><code>gs.getSession().isInteractive() && current.business_duration != null && 
+										current.incident_state == '6' && current.close_code == "Solved (Permanently)"</code>.
 								</p>
+								<h4 id="code-block-with-backticks">Business Rule:</h4>
 								<pre>
 									<code class="language-javascript">
 (function executeRule(current, previous /*null when async*/) {
 
-	var grTask = new GlideAggregate('incident');
-	grTask.addQuery('cmdb_ci', current.cmdb_ci);
-	grTask.addQuery('assignment_group', current.assignment_group);
-	grTask.addQuery('sys_class_name', current.sys_class_name);
-	grTask.addQuery('category', current.category);
-	grTask.addEncodedQuery('business_durationISNOTEMPTY');
-	grTask.addAggregate('AVG', 'business_duration');
-	grTask.query();
-	
-	while(grTask.next()) {
-		var avgBusDur = grTask.getAggregate('AVG', 'business_duration');
-		if (current.business_duration.split(' ')[1] &lt; avgBusDur) {
-			gs.addInfoMessage('Good job! You resolved this task quicker than average!!');
-			return;
-		}
+var grTask = new GlideAggregate('incident');
+grTask.addQuery('cmdb_ci', current.cmdb_ci);
+grTask.addQuery('assignment_group', current.assignment_group);
+grTask.addQuery('sys_class_name', current.sys_class_name);
+grTask.addQuery('category', current.category);
+grTask.addEncodedQuery('business_durationISNOTEMPTY');
+grTask.addAggregate('AVG', 'business_duration');
+grTask.query();
+
+while(grTask.next()) {
+	var avgBusDur = grTask.getAggregate('AVG', 'business_duration');
+	if (current.business_duration.split(' ')[1] < avgBusDur) {
+		gs.addInfoMessage('Good job! You resolved this task quicker than average!!');
+		return;
 	}
+}
 	
 })(current, previous);
 									</code>
