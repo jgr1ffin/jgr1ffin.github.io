@@ -67,7 +67,7 @@ function populateComputer(response) {
 	if (assetObj) {
 		g_form.setValue('u_assoc_comp_ci', assetObj[0].asset);
 		g_form.addInfoMessage("If this is computer issue, please verify the associated computer " 
-		+ assetObj[0].model + " is correct.");
+		+ assetObj[0].model + " (" + assetObj[0].serial + ") is correct.");
 	} else {
 		g_form.setValue('u_assoc_comp_ci', null);
 		g_form.addInfoMessage("Unable to locate callers computer, please assign manaully.");
@@ -96,6 +96,7 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 		if (grAsset.next()) {
 			var assetDetailsObj = {};
 			assetDetailsObj.asset = grAsset.ci.getValue('sys_id');
+			assetDetailsObj.serial = grAsset.getValue('serial_number');
 			assetDetailsObj.model = grAsset.getDisplayValue('model');
 			compArray.push(assetDetailsObj);
 			return JSON.stringify(compArray);
@@ -110,6 +111,7 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 
 			if (grCompCI.next()) {
 				compDetailsObj.asset = grAsset.getValue('sys_id');
+				compDetailsObj.serial = grAsset.Value('serial_number');
 				compDetailsObj.model = grAsset.getDisplayValue('model');
 				return JSON.stringify(compArray);
 			} else {
