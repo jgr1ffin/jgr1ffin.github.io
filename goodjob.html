@@ -14,15 +14,6 @@
 				<!-- Header -->
 				<header id="header">
 					<h1><a href="index.html"><i class="fa fa-home">&nbsp;</i>Posts</a></h1>
-					<nav class="links">
-						<ul>
-							<li><a href="#">Business Rules</a></li>
-							<li><a href="#">Client Scripts</a></li>
-							<li><a href="#">UI Actions</a></li>
-							<li><a href="#">Reporting</a></li>
-							<li><a href="#">Other</a></li>
-						</ul>
-					</nav>
 				</header>
 
 				<!-- Main -->
@@ -41,13 +32,13 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident ticket faster than average. 
+								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident faster than average. 
 									Although it's currently only targeting Incidents, it could be adapted for use on the base <strong>Task</strong> table instead. The script creates 
 									a GlideAggregate Incident object assigned to <code>grTask</code> and adds query conditions against the current Incident ticket details 
 									(category/sub). The GlideAggregate then calculates the average <code>business_duration</code> of the matching records and compares it 
-									against the current Incident ticket. If the current <code>business_druation</code> is less than average the user is presented with an 
-									information message stating, "Good job! You resolved this task quicker than average!!". The condition script below also confirms the session 
-									is interactive and the Incident state is 'Resolved', with a close code of "Solved (Permanently)".<br><br>
+									against the current Incident. If the current <code>business_druation</code> is less than average the user is presented with an 
+									information message stating, "Good job! You resolved this task quicker than average!!". The condition script below confirms the session 
+									is interactive and the Incident state is 'Resolved', with a close code of "Solved (Permanently)" beforing triggering.<br><br>
 									<strong>Script Condition: </strong><code>gs.getSession().isInteractive() && current.business_duration != null && 
 										current.incident_state == '6' && current.close_code == "Solved (Permanently)"</code>.
 								</p>
@@ -100,7 +91,8 @@ while(grTask.next()) {
 							while(x=eval(x));
 						</script></li>
 					</ul>
-					<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+					<p class="copyright">© 2019 - At Your ServiceNow - ServiceNow Blog<br>
+						Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 				</section>
 
 			</div>

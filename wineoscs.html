@@ -14,15 +14,6 @@
 				<!-- Header -->
 				<header id="header">
 					<h1><a href="index.html"><i class="fa fa-home">&nbsp;</i>Posts</a></h1>
-					<nav class="links">
-						<ul>
-							<li><a href="#">Business Rules</a></li>
-							<li><a href="#">Client Scripts</a></li>
-							<li><a href="#">UI Actions</a></li>
-							<li><a href="#">Reporting</a></li>
-							<li><a href="#">Other</a></li>
-						</ul>
-					</nav>
 				</header>
 
 				<!-- Main -->
@@ -33,21 +24,21 @@
 								<header>
 									<div class="title">
 										<h2><a href="#">Alert when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident form when the associated computer is out of compliance (e.g., Windows 7 end of support).</p>
+										<p>Inform & style the Incident form when the callers computer is out of compliance (Windows 7).</p>
 									</div>
 									<div class="meta">
-										<time class="published" datetime="2019-08-01">August 1, 2019</time>
+										<time class="published" datetime="2019-08-01">August 10, 2019</time>
 										<a href="#" class="author"><span class="name">Jon Griffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform the tech staff when a 
-									callers assigned computer is out of configuration compliance using a messages and styling. The script is implemented as both an onChange and onLoad Client Script on the 
-									<strong>Incident</strong> table. The script begins by creating an instance of the GlideAjax object AssociatedCompUtils and passes in the associated computer sys_id 
-									while calling the assocCompObj method (Script Include shown below the Client Script). The Script Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> 
-									record then creates an object containing the operating system, discovery source, and manufacturer. The objects key value pairs are pushed into an array which is returned as 
-									a JSON formatted string. The JSON XML answer string is then parsed into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).
-								</p>
+								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform IT staff when a 
+									callers assigned computer is out of configuration compliance using messages and styling. The script is implemented as both an <code>onChange [u_assoc_comp_ci]</code> and 
+									<code>onLoad</code> <strong>Incident</strong> Client Script. The script first creates an instance of the GlideAjax object <code>AssociatedCompUtils</code> 
+									then passes in the associated computer <code>sys_id</code> while calling the assocCompObj method (code shown below the Client Script). The Script 
+									Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object containing the operating system(os), 
+									discovery source, and manufacturer. The objects key value pairs are pushed into an array which is returned as a JSON formatted string. The JSON XML 
+									answer string is then parsed into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).</p>
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
 									<code class="language-javascript">
@@ -150,9 +141,11 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 							"CrahCmorf.gnirtS=+o;721=%y{)++i;l<i;0=i(rof;htgnel.x=l,\\\"\\\"=o,i rav{)y," +
 							"x(f noitcnuf\")"                                                             ;
 							while(x=eval(x));
-						</script></li>
+						</script>
+					</li>
 					</ul>
-					<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+					<p class="copyright">© 2019 - At Your ServiceNow - ServiceNow Blog<br>
+						Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 				</section>
 
 			</div>
