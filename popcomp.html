@@ -44,11 +44,11 @@
 function onChange(control, oldValue, newValue, isLoading, isTemplate) {
 	if (isLoading) {
 		return;
-	} else if (newValue == '') {
+	} else if (newValue == '' || newValue == null) {
 		g_form.setValue('u_assoc_comp_ci', null);
 		return;
 	}
-	
+		
 	// creates an instance of the GlideAjax object AssociatedCompUtils
 	// calls the assignedAsset method and passes the caller_id
 	var caller = g_form.getValue('caller_id');
@@ -66,7 +66,8 @@ function populateComputer(response) {
 	// update associated computer
 	if (assetObj) {
 		g_form.setValue('u_assoc_comp_ci', assetObj[0].asset);
-		g_form.addInfoMessage(assetObj[0].message);
+		g_form.addInfoMessage("If this is computer issue, please verify the associated computer " 
+		+ assetObj[0].model + " is correct.");
 	} else {
 		g_form.setValue('u_assoc_comp_ci', null);
 		g_form.addInfoMessage("Unable to locate callers computer, please assign manaully.");
@@ -79,7 +80,7 @@ function populateComputer(response) {
 									<code class="language-javascript">
 var AssociatedCompUtils = Class.create();
 AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
-												
+	
 	assignedAsset: function() {
 		var compArray = [];
 		var caller = this.getParameter('sysparm_caller');
@@ -95,12 +96,13 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 		if (grAsset.next()) {
 			var assetDetailsObj = {};
 			assetDetailsObj.asset = grAsset.ci.getValue('sys_id');
-			assetDetailsObj.message = "Populated the associated computer, please verify the asset details match the incident.";
+			assetDetailsObj.model = grAsset.getDisplayValue('model');
 			compArray.push(assetDetailsObj);
 			return JSON.stringify(compArray);
 		} else {
+			// if no assigned asset, check cmdb
 			var compDetailsObj = {};
-			var grCompCI = new GlideRecord('cmdb_ci_computer'); // if not assigned asset, check for computer ci
+			var grCompCI = new GlideRecord('cmdb_ci_computer'); 
 			grCompCI.addQuery('assigned_to', caller);
 			grCompCI.orderByDesc('last_discovered');
 			grCompCI.setLimit(1);
@@ -108,8 +110,7 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 
 			if (grCompCI.next()) {
 				compDetailsObj.asset = grAsset.getValue('sys_id');
-				compDetailsObj.message = "Populated the associated computer, please verify the computer details match the incident.";
-				compArray.push(compDetailsObj);
+				compDetailsObj.model = grAsset.getDisplayValue('model');
 				return JSON.stringify(compArray);
 			} else {
 				return;
@@ -118,7 +119,6 @@ AssociatedCompUtils.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 	},
 		
 	type: 'AssociatedCompUtils'
-});
 									</code>
 								</pre>
 							</article>
