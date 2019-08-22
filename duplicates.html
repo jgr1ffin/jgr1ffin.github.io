@@ -32,18 +32,18 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>In order to prevent duplicate records in ServiceNow, you can simply enable the Unique Dictionary value 
-									for the table column that you wish to be unique. The only "problem" with only doing this approach is 
-									is the user expereince isn't ideal since you will be presented with a "rude" error message. The below 
-									Business Rule scripts were created in addition to setting the <strong>alm_hardware</strong>, <code>serial_number</code> 
-									column as Unique.
+								<p>To prevent duplicate records in ServiceNow, you can simply enable the "unique" Dictionary value for one of the table columns. 
+									The only <em>problem</em> with only using this approach alone is that the user expereince isn't ideal due to "rude" 
+									error message. The below Business Rules were created to make the client side UX more user, in addition to setting 
+									the database columns as unique (<strong>alm_hardware</strong>, <code>serial_number</code>).
 									<br><br>
 									<strong>ALM_Hardware Script Condition: </strong>
 									<code>gs.getSession().isInteractive() && current.serial_number.changes();</code>.
 									<br>
 									<strong>CMDB_Hardware_Product_Model_List Script Condition: </strong>
-									<code>gs.getSession().isInteractive() && current.model_number.changes() && current.name.changes();<code>								</p>
-								<h4 id="code-block-with-backticks">Business Rule:</h4>
+									<code>gs.getSession().isInteractive() && current.model_number.changes() && current.name.changes();</code>
+								</p>
+								<h4 id="code-block-with-backticks">Asset - Business Rule (before):</h4>
 								<pre>
 									<code class="language-javascript">
 (function executeRule(current, previous /*null when async*/) {
