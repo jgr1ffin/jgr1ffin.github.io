@@ -14,7 +14,7 @@
 				<!-- Header -->
 				<header id="header">
 					<h1><a href="index.html">ITSM ServiceNow Blog</a></h1>
-					<nav class="links">
+					<!--<nav class="links">
 						<ul>
 							<li><a href="#">Business Rules</a></li>
 							<li><a href="#">Client Scripts</a></li>
@@ -22,7 +22,7 @@
 							<li><a href="#">Reporting</a></li>
 							<li><a href="#">Other</a></li>
 						</ul>
-					</nav>
+					</nav>-->
 				</header>
 
 				<!-- Main -->
@@ -33,16 +33,16 @@
 								<header>
 									<div class="title">
 										<h2><a href="wineoscs.html">Alert when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident form when the associated computer is out of compliance (e.g., Windows 7).</p>
+										<p>Inform & style the Incident form when the callers computer is out of compliance (Windows 7).</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 1, 2019</time>
-										<a href="#" class="author"><span class="name">Jon Griffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<a href="wineoscs.html" class="image featured"><img src="images/wineos.jpg" alt="" /></a>-->
-								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform the Help Desk when a 
-									callers assigned computer is out of configuration compliance with a field message and styling.</p>
+								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform IT staff when a 
+									callers assigned computer is out of configuration compliance using messages and styling.</p>
 								<footer>
 									<ul class="actions">
 										<li><a href="wineoscs.html" class="button large">Continue Reading</a></li>
@@ -59,12 +59,12 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="popcomp.html">Quickly populate the Tasks associated computer</a></h2>
+										<h2><a href="popcomp.html">Quickly populate the Incidents associated computer</a></h2>
 										<p>Automatically populate the callers primary assigned computer.</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-07-15">July 15, 2019</time>
-										<a href="#" class="author"><span class="name">Jon Griffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<a href="popcomp.html" class="image featured"><img src="images/pic02.jpg" alt="" /></a>-->
@@ -75,8 +75,8 @@
 									</ul>
 									<ul class="stats">
 											<i class="fa fa-folder"></i></li>
-											<li><a href="#">UI Action</a></li>
 											<li><a href="#">Client Script</a></li>
+											<li><a href="#">Script Include</a></li>
 									</ul>
 								</footer>
 							</article>
@@ -90,14 +90,42 @@
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-05-13">May 13, 2019</time>
-										<a href="#" class="author"><span class="name">Jon Griffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<a href="goodjob.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>-->
-								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident ticket faster than average.</p>
+								<p>I created this Business Rule to promote efficiency by giving immediate praise for closing an Incident faster than average.</p>
 								<footer>
 									<ul class="actions">
 										<li><a href="goodjob.html" class="button large">Continue Reading</a></li>
+									</ul>
+									<ul class="stats">
+										<i class="fa fa-folder"></i></li>
+										<li><a href="#">Business Rule</a></li>
+									</ul>
+								</footer>
+							</article>
+						
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="duplicates.html">Prevent duplicate assets</a></h2>
+										<p>Stop duplicate asset and model records, while providing a nice UX.</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2019-03-28">March 28, 2019</time>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+									</div>
+								</header>
+								<!--<a href="duplicates.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>-->
+								<p>In order to prevent duplicate records in ServiceNow, you can simply enable the Unique Dictionary value 
+									for the table column that you wish to be unique. The only "problem" with only doing this approach is 
+									is the user expereince isn't ideal since you will be presented with a "rude" error message.
+								</p>
+								<footer>
+									<ul class="actions">
+										<li><a href="duplicates.html" class="button large">Continue Reading</a></li>
 									</ul>
 									<ul class="stats">
 										<i class="fa fa-folder"></i></li>
@@ -116,7 +144,8 @@
 								<a href="#" class="logo"><img src="images/logo.jpg" alt="" /></a>
 								<header>
 									<h2>At Your ServiceNow</h2>
-									<p>An ITSM ServiceNow Blog with an ITAM focus</p>
+									<p>An ITSM ServiceNow Blog with an asset <i class="fa fa-desktop" aria-hidden="true"></i> focus.
+									</p>
 								</header>
 							</section>
 
@@ -130,25 +159,26 @@
 												<h3><a href="wineoscs.html">Alert when computers are out of compliance</a></h3>
 												<time class="published" datetime="2019-08-01">August 1, 2019</time>
 											</header>
-											<a href="wineoscs.html" class="image"><img src="images/win7eos_small.jpg" alt="Microsoft Windows icon" /></a>
+											<a href="wineoscs.html" class="image"><i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i></a>
+											<!--<a href="wineoscs.html" class="image"><img src="images/win7eos_small.jpg" alt="Microsoft Windows icon" /></a>-->
 										</article>
 									</li>
 									<li>
 										<article>
 											<header>
-												<h3><a href="popcomp.html">Quickly populate the Tasks associated computer</a></h3>
+												<h3><a href="popcomp.html">Quickly populate the Incidents associated computer</a></h3>
 												<time class="published" datetime="2019-07-15">July 15, 2019</time>
 											</header>
-											<a href="popcomp.html" class="image"><img src="images/pic09.jpg" alt="" /></a>
+											<a href="popcomp.html" class="image"><i class="fa fa-laptop-code fa-3x" aria-hidden="true"></i></a>
 										</article>
 									</li>
 									<li>
 										<article>
 											<header>
-												<h3><a href="single.html">Promote efficiency by giving praise</a></h3>
+												<h3><a href="goodjob.html">Promote efficiency by giving praise</a></h3>
 												<time class="published" datetime="2019-05-13">May 13, 2019</time>
 											</header>
-											<a href="goodjob.html" class="image"><img src="images/pic10.jpg" alt="" /></a>
+											<a href="goodjob.html" class="image"><i class="fa fa-award fa-4x" aria-hidden="true"></i></a>
 										</article>
 									</li>
 								</ul>
@@ -187,11 +217,19 @@
 									while(x=eval(x));
 								</script></li>
 							</ul>
-							<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+							<p class="copyright">© 2019 - At Your ServiceNow - ServiceNow Blog<br>
+								Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 						</section>
 	
 				</div>
 	
+			<!-- Formatting
+				<strong>cmdb_ci_computer</strong> || Capitalize table name in <p>
+				<code>AssociatedCompUtils (function), grTask (var), business_duration (field name) </code>
+				<code>onChange [u_assoc_comp_ci]</code>
+				Capitalize Script Type => Script Include
+			-->
+			
 			<!-- Scripts -->
 				<script src="assets/js/jquery.min.js"></script>
 				<script src="assets/js/browser.min.js"></script>

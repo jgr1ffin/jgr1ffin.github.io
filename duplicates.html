@@ -14,15 +14,6 @@
 				<!-- Header -->
 				<header id="header">
 					<h1><a href="index.html"><i class="fa fa-home">&nbsp;</i>Posts</a></h1>
-					<nav class="links">
-						<ul>
-							<li><a href="#">Business Rules</a></li>
-							<li><a href="#">Client Scripts</a></li>
-							<li><a href="#">UI Actions</a></li>
-							<li><a href="#">Reporting</a></li>
-							<li><a href="#">Other</a></li>
-						</ul>
-					</nav>
 				</header>
 
 				<!-- Main -->
@@ -32,50 +23,64 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Quickly populate the associated Task computer</a></h2>
-										<p>Automatically populate the callers primary assigned computer.</p>
+										<h2><a href="#">Prevent duplicate assets</a></h2>
+										<p>Stop duplicate asset and model records, while providing a nice UX.</p>
 									</div>
 									<div class="meta">
-										<time class="published" datetime="2019-08-01">August 1, 2019</time>
+										<time class="published" datetime="2019-05-13">March 28, 2019</time>
 										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This script was devloped to help IT staff quickly populate the callers assigned computer asset, which is most likely the computer associated with
-								 the Incident/Task.
-								</p>
+								<p>In order to prevent duplicate records in ServiceNow, you can simply enable the Unique Dictionary value 
+									for the table column that you wish to be unique. The only "problem" with only doing this approach is 
+									is the user expereince isn't ideal since you will be presented with a "rude" error message. The below 
+									Business Rule scripts were created in addition to setting the <strong>alm_hardware</strong>, <code>serial_number</code> 
+									column as Unique.
+									<br><br>
+									<strong>ALM_Hardware Script Condition: </strong>
+									<code>gs.getSession().isInteractive() && current.serial_number.changes();</code>.
+									<br>
+									<strong>CMDB_Hardware_Product_Model_List Script Condition: </strong>
+									<code>gs.getSession().isInteractive() && current.model_number.changes() && current.name.changes();<code>								</p>
+								<h4 id="code-block-with-backticks">Business Rule:</h4>
 								<pre>
 									<code class="language-javascript">
-var caller = current.caller_id;
-var grAsset = new GlideRecord('alm_hardware');
-grAsset.addQuery('state', 'In use');
-grAsset.addQuery('assigned_to', caller);
-grAsset.addQuery('purpose', 'primary');
-grAsset.orderByDesc('retirement_date');
-grAsset.setLimit(1);
-grAsset.query();
-		
-//Update associated computer with primary assigned asset
-if (grAsset.next()) {
-	current.setValue('u_assoc_comp_ci', grAsset.ci);
-	current.update();
-	gs.addInfoMessage('Populated associated computer, please verify asset details.');
-} else {
-	//Else update associated computer with assigned computer CI
-	var grCompCI = new GlideRecord('cmdb_ci_computer');
-	grCompCI.addQuery('assigned_to', caller);
-	grCompCI.setLimit(1);
-	grCompCI.query();
-		
-	if (grCompCI.next()) {
-		current.setValue('u_assoc_comp_ci', grCompCI);
-		current.update();
-		gs.addInfoMessage('Populated associated computer, please verify asset details.');
-	} else {
-		gs.addInfoMessage('Unable to locate an assigned computer, please assign manaully.');
+(function executeRule(current, previous /*null when async*/) {
+
+	var grAsset = new GlideRecord('alm_hardware');
+	grAsset.addQuery('serial_number', current.serial_number);
+	grAsset.query();
+
+	if (grAsset.next() && grAsset.sys_id != current.sys_id) { 
+		gs.addErrorMessage('Error Saving: Asset with matching serial number already exists!');
+		current.setAbortAction(true);
 	}
-}
-action.setRedirectURL(current);
+
+})(current, previous);
+									</code>
+								</pre><br>
+								<h4 id="code-block-with-backticks">Hardware Model - Business Rule (before):</h4>
+								<pre>
+									<code class="language-javascript">
+(function executeRule(current, previous /*null when async*/) {
+
+	var grModel = new GlideRecord('cmdb_hardware_product_model');
+	if (!current.model_number) {
+		grModel.addQuery('name', current.name);
+		grModel.query();
+	} else {
+		grModel.addQuery('name', current.name).addOrCondition('model_number', current.model_number);
+		grModel.addOrCondition('model_number', current.model_number);
+		grModel.query();
+	}
+
+	if (grModel.next() && grModel.sys_id != current.sys_id) { 
+		gs.addErrorMessage('Error Saving: Hardware model with matching name/number already exists!');
+		current.setAbortAction(true);
+	}
+
+})(current, previous);
 									</code>
 								</pre>
 							</article>
@@ -102,7 +107,8 @@ action.setRedirectURL(current);
 							while(x=eval(x));
 						</script></li>
 					</ul>
-					<p class="copyright">&copy; Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+					<p class="copyright">© 2019 - At Your ServiceNow - ServiceNow Blog<br>
+						Images: <a href="http://unsplash.com">Unsplash</a>.</p>
 				</section>
 
 			</div>
