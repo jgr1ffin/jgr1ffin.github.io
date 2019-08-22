@@ -33,11 +33,11 @@
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>This Client Script was created to help IT staff quickly populate the callers assigned computer on the <strong>Incident</strong> form, which is most likely the computer 
-									associated with the IT incident being reported. The script attempts to assign the primary hardware asset <strong>[alm_hardware]</strong>, sorted by the <code>retirement_date</code>. 
+									associated with the IT incident being reported. The script attempts to assign the primary assigned computer asset <strong>[alm_hardware]</strong>, sorted by the <code>retirement_date</code>. 
 									If no primary assets are assigned, the script checks the CMDB computer table, <strong>[cmdb_ci_computer]</strong> that they last logged into. Performing this task manually 
 									is tedious and often forgotten so automation is automating it is essential. The script creates an instance of the GlideAjax object <code>AssociatedCompUtils</code>, then calls 
-									the <code>assignedAsset</code> method to perform the GlideRecord lookup. This script is currently implemented as a <code>onChange [caller_id]</code> and <code>onLoad</code> 
-									Client Script, but it could also be implemented as a UI Action if prefered.</p>
+									the <code>assignedAsset</code> method to perform the GlideRecord lookup. This script is currently implemented as a <code>onChange</code> <strong>caller_id</strong> and form 
+									<code>onLoad</code> Client Script, but it could also be implemented as a UI Action if prefered.</p>
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
 									<code class="language-javascript">

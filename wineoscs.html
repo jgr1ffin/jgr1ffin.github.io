@@ -33,12 +33,13 @@
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform IT staff when a 
-									callers assigned computer is out of configuration compliance using messages and styling. The script is implemented as both an <code>onChange [u_assoc_comp_ci]</code> and 
-									<code>onLoad</code> <strong>Incident</strong> Client Script. The script first creates an instance of the GlideAjax object <code>AssociatedCompUtils</code> 
-									then passes in the associated computer <code>sys_id</code> while calling the assocCompObj method (code shown below the Client Script). The Script 
-									Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object containing the operating system (os), 
-									discovery source, and manufacturer. The objects key value pairs are pushed into an array which is returned as a JSON formatted string. The JSON XML 
-									answer string is then parsed into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).</p>
+									callers assigned computer is out of configuration compliance using messages and styling. The script is implemented as both an <code>onChange</code> 
+									<strong>u_assoc_comp_ci</strong> and <code>onLoad</code> <strong>Incident</strong> Client Script. The script first creates an instance of the GlideAjax 
+									object <code>AssociatedCompUtils</code> then passes in the associated computer <code>sys_id</code> while calling the <code>assocCompObj</code> method 
+									(code shown below Client Script). The Script Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object 
+									containing the operating system, discovery source, and manufacturer. The objects value pairs are pushed into an array which is returned as a JSON 
+									formatted string. The JSON XML answer string is then parsed into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).
+								</p>
 								<h4 id="code-block-with-backticks">Client Script:</h4>
 								<pre>
 									<code class="language-javascript">

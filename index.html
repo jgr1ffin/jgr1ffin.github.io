@@ -8,15 +8,6 @@
 	</head>
 	<body class="is-preload">
 
-	<!-- Formatting:
-		<strong> table names </strong> - cmdb_ci_computer ( cap first letter if in sentence else [ table name ] )
-		<code> code snippets, variables, and field names </code> - AssociatedCompUtils (function), grTask (var), business_duration (field name)
-		author = JGriffin
-		<code>onChange [u_assoc_comp_ci]</code>
-		IT staff
-		Business Rule (notice caps)
-	-->
-
 		<!-- Wrapper -->
 			<div id="wrapper">
 
@@ -114,6 +105,34 @@
 									</ul>
 								</footer>
 							</article>
+						
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="duplicates.html">Prevent duplicate assets</a></h2>
+										<p>Stop duplicate asset and model records, while providing a nice UX.</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2019-03-28">March 28, 2019</time>
+										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
+									</div>
+								</header>
+								<!--<a href="duplicates.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>-->
+								<p>In order to prevent duplicate records in ServiceNow, you can simply enable the Unique Dictionary value 
+									for the table column that you wish to be unique. The only "problem" with only doing this approach is 
+									is the user expereince isn't ideal since you will be presented with a "rude" error message.
+								</p>
+								<footer>
+									<ul class="actions">
+										<li><a href="duplicates.html" class="button large">Continue Reading</a></li>
+									</ul>
+									<ul class="stats">
+										<i class="fa fa-folder"></i></li>
+										<li><a href="#">Business Rule</a></li>
+									</ul>
+								</footer>
+							</article>
 
 						</div>
 
@@ -204,6 +223,13 @@
 	
 				</div>
 	
+			<!-- Formatting
+				<strong>cmdb_ci_computer</strong> || Capitalize table name in <p>
+				<code>AssociatedCompUtils (function), grTask (var), business_duration (field name) </code>
+				<code>onChange [u_assoc_comp_ci]</code>
+				Capitalize Script Type => Script Include
+			-->
+			
 			<!-- Scripts -->
 				<script src="assets/js/jquery.min.js"></script>
 				<script src="assets/js/browser.min.js"></script>
