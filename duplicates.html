@@ -23,27 +23,29 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Prevent duplicate assets</a></h2>
-										<p>Stop duplicate asset and model records, while providing a nice UX.</p>
+										<h2><a href="#">Preventing duplicate assets</a></h2>
+										<p>Stop duplicate asset and model records.</p>
 									</div>
 									<div class="meta">
-										<time class="published" datetime="2019-05-13">March 28, 2019</time>
+										<time class="published" datetime="2019-03-28">March 28, 2019</time>
 										<a href="#" class="author"><span class="name">JGriffin</span><img src="images/avatar.jpg" alt="Griffin avatar" /></a>
 									</div>
 								</header>
+									
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>To prevent duplicate records in ServiceNow, you can simply enable the "unique" Dictionary value for one of the table columns. 
-									The only <em>problem</em> with only using this approach alone is that the user expereince isn't ideal due to "rude" 
-									error message. The below Business Rules were created to make the client side UX more user, in addition to setting 
-									the database columns as unique (<strong>alm_hardware</strong>, <code>serial_number</code>).
-									<br><br>
-									<strong>ALM_Hardware Script Condition: </strong>
-									<code>gs.getSession().isInteractive() && current.serial_number.changes();</code>.
-									<br>
-									<strong>CMDB_Hardware_Product_Model_List Script Condition: </strong>
-									<code>gs.getSession().isInteractive() && current.model_number.changes() && current.name.changes();</code>
-								</p>
-								<h4 id="code-block-with-backticks">Asset - Business Rule (before):</h4>
+								<p>Preventing duplicate asset records in ServiceNow is easily achieved by requiring uniqueness on 
+									either the <code>serial_number</code> or <code>asset_tag</code> columns. This can be configured 
+									by enabling <strong>"unique"</strong> on the chosen columns dictionary entry. Note: you may need 
+									to first add this field to the form prior to enabling. The only <em>problem</em> 
+									with <em>only</em> using this approach is the error message isn't all that clear. The below Business 
+									Rules were created to make the client side UX more user friendly, in addition to setting the database 
+									columns as unique (<strong>alm_hardware</strong>: <code>serial_number</code> && 
+									<strong>cmdb_hardware_product_model</strong>, <code>name</code>).<br><br>
+									<strong>Asset (alm_hardware) - Script Condition: </strong>
+									<code>gs.getSession().isInteractive() && current.serial_number.changes();</code>.<br>
+									<strong>Hardware Model (cmdb_hardware_product_model) - Script Condition: </strong>
+									<code>gs.getSession().isInteractive() && current.model_number.changes() && current.name.changes();</code></p>
+								<h3 id="code-block-with-backticks">Asset - Business Rule (before):</h3>								
 								<pre>
 									<code class="language-javascript">
 (function executeRule(current, previous /*null when async*/) {
@@ -60,7 +62,7 @@
 })(current, previous);
 									</code>
 								</pre><br>
-								<h4 id="code-block-with-backticks">Hardware Model - Business Rule (before):</h4>
+								<h3 id="code-block-with-backticks">Hardware Model - Business Rule (before):</h3>
 								<pre>
 									<code class="language-javascript">
 (function executeRule(current, previous /*null when async*/) {

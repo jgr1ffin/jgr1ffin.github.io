@@ -38,7 +38,7 @@
 									is tedious and often forgotten so automation is automating it is essential. The script creates an instance of the GlideAjax object <code>AssociatedCompUtils</code>, then calls 
 									the <code>assignedAsset</code> method to perform the GlideRecord lookup. This script is currently implemented as a <code>onChange</code> <strong>caller_id</strong> and form 
 									<code>onLoad</code> Client Script, but it could also be implemented as a UI Action if prefered.</p>
-								<h4 id="code-block-with-backticks">Client Script:</h4>
+								<h3 id="code-block-with-backticks">Client Script:</h3>
 								<pre>
 									<code class="language-javascript">
 function onChange(control, oldValue, newValue, isLoading, isTemplate) {
@@ -75,7 +75,7 @@ function populateComputer(response) {
 }
 									</code>
 								</pre><br>
-								<h4 id="code-block-with-backticks">Script Include:</h4>
+								<h3 id="code-block-with-backticks">Script Include:</h3>
 								<pre>
 									<code class="language-javascript">
 var AssociatedCompUtils = Class.create();
