@@ -123,7 +123,7 @@
 								<header>
 									<div class="title">
 										<h2><a href="duplicates.html">Prevent duplicate assets</a></h2>
-										<p>Stop duplicate asset and model records, while providing a nice UX.</p>
+										<p>Stop duplicate asset and model records.</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-03-28">March 28, 2019</time>
@@ -131,9 +131,10 @@
 									</div>
 								</header>
 								<!--<a href="duplicates.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>-->
-								<p>In order to prevent duplicate records in ServiceNow, you can simply enable the Unique Dictionary value 
-									for the table column that you wish to be unique. The only "problem" with only doing this approach is 
-									is the user expereince isn't ideal since you will be presented with a "rude" error message.
+								<p>Preventing duplicate asset records in ServiceNow is easily achieved by requiring uniqueness on 
+									either the serial_number or asset_tag columns. This can be configured by enabling 
+									"unique" on the chosen columns dictionary entry. The only problem with only using this approach 
+									is the error message isn't all that clear.
 								</p>
 								<footer>
 									<ul class="actions">
