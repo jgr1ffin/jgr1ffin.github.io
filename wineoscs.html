@@ -24,7 +24,7 @@
 								<header>
 									<div class="title">
 										<h2><a href="#">Alert when computers are out of compliance</a></h2>
-										<p>Inform & style the Incident form when the callers computer is out of compliance (Windows 7).</p>
+										<p>Inform & style the Incident form when the caller's computer is out of compliance (Windows 7).</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-08-01">August 10, 2019</time>
@@ -33,12 +33,12 @@
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>This script was created to help with the remediation of Microsoft Windows 7 end of support. The script is designed to inform IT staff when a 
-									callers assigned computer is out of configuration compliance using messages and styling. The script is implemented as both an <code>onChange</code> 
+									caller's assigned computer is out of configuration compliance using info/field messages and styling. The script is implemented as both an <code>onChange</code> 
 									<strong>u_assoc_comp_ci</strong> and <code>onLoad</code> <strong>Incident</strong> Client Script. The script first creates an instance of the GlideAjax 
 									object <code>AssociatedCompUtils</code> then passes in the associated computer <code>sys_id</code> while calling the <code>assocCompObj</code> method 
 									(code shown below Client Script). The Script Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object 
 									containing the operating system, discovery source, and manufacturer. The objects value pairs are pushed into an array which is returned as a JSON 
-									formatted string. The JSON XML answer string is then parsed into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).
+									formatted string. The JSON answer string is then parsed back into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).
 								</p>
 								<h3 id="code-block-with-backticks">Client Script:</h3>
 								<pre>
@@ -47,7 +47,7 @@ function onChange(control, oldValue, newValue, isLoading, isTemplate) {
 	
 	if (isLoading) {
 		return;
-	} else if (newValue === '') {
+	} else if (newValue === '') { // if blank clear alert
 		var assocCompField = g_form.getControl('sys_display.incident.u_assoc_comp_ci');
 		assocCompField.style.fontWeight = 'normal';
 		assocCompField.style.backgroundColor = 'white';
@@ -57,7 +57,7 @@ function onChange(control, oldValue, newValue, isLoading, isTemplate) {
 	}
 	
 	// creates an instance of the GlideAjax object AssociatedCompUtils
-	// calls the assocCompObj method and passes the assoc comp sys_id
+	// calls the assocCompObj method and pass the assoc comp sys_id
 	var assocCompID = g_form.getValue('u_assoc_comp_ci');
 	var assocCompGA = new GlideAjax('AssociatedCompUtils');
 	assocCompGA.addParam('sysparm_name', 'assocCompObj');

@@ -38,11 +38,11 @@
 									conditions against the current Incident ticket details (category/sub). The GlideAggregate calculates the average <code>business_duration</code> 
 									of the matching records and compares it against the current Incident record. If the <code>business_druation</code> is less than average 
 									the user is presented with an information message stating, "Good job! You resolved this task quicker than average!". The condition script below 
-									confirms the session is interactive (live user session) and the Incident state is set to 'Resolved', with a close code of "Solved (Permanently)" 
-									beforing triggering.<br><br>
+									confirms the session is interactive (live user session) and the Incident state is set to "Resolved", with a close code of "Solved (Permanently)" 
+									before triggering.<br><br>
 									<strong>Script Condition: </strong>
 									<code>gs.getSession().isInteractive() && current.business_duration != null && 
-										current.incident_state == '6' && current.close_code == "Solved (Permanently)"
+										current.incident_state == '6' && current.close_code == "Solved (Permanently)";
 									</code>.
 								</p>
 								<h3 id="code-block-with-backticks">Business Rule:</h3>
