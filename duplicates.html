@@ -35,9 +35,9 @@
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
 								<p>Preventing duplicate asset records in ServiceNow is easily achieved by requiring uniqueness on 
 									either the <code>serial_number</code> or <code>asset_tag</code> columns. This can be configured 
-									by enabling <strong>"unique"</strong> on the chosen columns dictionary entry. Note: you may need 
+									by enabling <strong>"unique"</strong> on the chosen columns dictionary entry. Note: You may need 
 									to first add this field to the form prior to enabling. The only <em>problem</em> 
-									with <em>only</em> using this approach is the error message isn't all that clear. The below Business 
+									with using this approach is that the error message isn't very clear. The below Business 
 									Rules were created to make the client side UX more user friendly, in addition to setting the database 
 									columns as unique (<strong>alm_hardware</strong> - <code>serial_number</code> && 
 									<strong>cmdb_hardware_product_model</strong> - <code>name</code>).<br><br>

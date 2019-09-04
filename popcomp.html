@@ -23,8 +23,8 @@
 							<article class="post">
 								<header>
 									<div class="title">
-										<h2><a href="#">Quickly populate the Incidents associated computer</a></h2>
-										<p>Automatically populate the callers primary assigned computer.</p>
+										<h2><a href="#">Quickly populate the Incident's associated computer</a></h2>
+										<p>Automatically populate the caller's primary assigned computer.</p>
 									</div>
 									<div class="meta">
 										<time class="published" datetime="2019-07-15">July 15, 2019</time>
@@ -32,12 +32,12 @@
 									</div>
 								</header>
 								<!--<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>-->
-								<p>This Client Script was created to help IT staff quickly populate the callers assigned computer on the <strong>Incident</strong> form, which is most likely the computer 
+								<p>This Client Script was created to help IT staff quickly populate the caller's assigned computer on the <strong>Incident</strong> form, which is most likely the computer 
 									associated with the IT incident being reported. The script attempts to assign the primary assigned computer asset <strong>[alm_hardware]</strong>, sorted by the <code>retirement_date</code>. 
 									If no primary assets are assigned, the script checks the CMDB computer table, <strong>[cmdb_ci_computer]</strong> that they last logged into. Performing this task manually 
-									is tedious and often forgotten so automation is automating it is essential. The script creates an instance of the GlideAjax object <code>AssociatedCompUtils</code>, then calls 
-									the <code>assignedAsset</code> method to perform the GlideRecord query. This script is currently implemented as a <code>onChange</code> <strong>caller_id</strong> and form 
-									<code>onLoad</code> Client Script, but it could also be implemented as a UI Action if preferred.</p>
+									is tedious and often forgotten so automation is essential. The script creates an instance of the GlideAjax object <code>AssociatedCompUtils</code>, then calls 
+									the <code>assignedAsset</code> method to perform the GlideRecord query. This script is currently implemented as an <code>onChange</code> <strong>caller_id</strong> and form 
+									<code>onLoad</code> Client Script, but could also be implemented as a UI Action if preferred.</p>
 								<h3 id="code-block-with-backticks">Client Script:</h3>
 								<pre>
 									<code class="language-javascript">

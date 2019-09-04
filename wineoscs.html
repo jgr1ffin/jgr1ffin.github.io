@@ -37,7 +37,7 @@
 									<strong>u_assoc_comp_ci</strong> and <code>onLoad</code> <strong>Incident</strong> Client Script. The script first creates an instance of the GlideAjax 
 									object <code>AssociatedCompUtils</code> then passes in the associated computer <code>sys_id</code> while calling the <code>assocCompObj</code> method 
 									(code shown below Client Script). The Script Include creates a GlideRecord object to the <strong>cmdb_ci_computer</strong> record then creates an object 
-									containing the operating system, discovery source, and manufacturer. The objects value pairs are pushed into an array which is returned as a JSON 
+									containing the operating system, discovery source, and manufacturer. The object's value pairs are pushed into an array which is returned as a JSON 
 									formatted string. The JSON answer string is then parsed back into an object and checked for matching compliance arguments (Windows 7 and unmanaged Mac).
 								</p>
 								<h3 id="code-block-with-backticks">Client Script:</h3>
